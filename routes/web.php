@@ -13,12 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::group(['middleware' => ['web']], function () {
-    Route::get('/play', 'PlayController@index');
+    Route::get('/', 'PlayController@index');
     Route::get('/reset', 'PlayController@reset');
     Route::post('ajaxRequest', 'PlayController@ajaxGuessCharPost')->name('ajaxRequest.post');
 });

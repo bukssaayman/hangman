@@ -2,20 +2,19 @@
 
 namespace App\Game;
 
-use App\Game\Interfaces\RandomWordInterface;
-//use App\Repository\Model\WordMol;
+use App\Game\Interfaces\randomWordInterface;
 
-class RandomWord implements RandomWordInterface {
+class RandomWord implements randomWordInterface {
 
-    public $randomWord;
-    public $randomWordDescription;
+    private $randomWord;
+    private $randomWordDescription;
 
     CONST RANDOM_WORD_URL = "https://randomword.com/";
 
     public function __construct() {
         do {
             $this->getRandomWord();
-        } while (strlen($this->randomWord) < env('MIN_WORD_LEN')); //no easy words
+        } while (strlen($this->randomWord) < env('MIN_WORD_LEN', 5)); //no easy words
     }
 
     private function getRandomWord() {
@@ -37,6 +36,14 @@ class RandomWord implements RandomWordInterface {
                 }
             }
         }
+    }
+
+    public function getRandomWordPlainText(): String {
+        return $this->randomWord;
+    }
+
+    public function getRandomWordDescription(): String {
+        return $this->randomWordDescription;
     }
 
 }

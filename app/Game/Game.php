@@ -3,12 +3,14 @@
 namespace App\Game;
 
 use App\Game\Model\GuessResultModel;
+use App\Game\Interfaces\gameInterface;
 
-class Game {
+class Game implements gameInterface {
+
     const GAME_STATUS_IN_PROGRESS = "in_progress";
     const GAME_STATUS_WON = "won_last_game";
     const GAME_STATUS_LOST = "lost_last_game";
-    const GAME_GUESSES_PER_WORD_MULTIPLIER = 1.3; //TODO:: consider moving to .env
+    const GAME_GUESSES_PER_WORD_MULTIPLIER = 1.8;
     const WORD_OBFUSCATE_CHAR = 'x';
 
     private $totalGuessesForWord;
@@ -18,7 +20,7 @@ class Game {
     private $charsGuessed;
     private $charsNotYetGuessed;
     private $obfuscatedWord;
-    protected $randomWordObject;
+    private $randomWordObject;
 
     public function __construct(RandomWord $randomWord) {
         $this->randomWordObject = $randomWord;
@@ -27,10 +29,10 @@ class Game {
 
     private function runGame() {
         $this->allowedChars = range('a', 'z');
-        $this->totalGuessesForWord = ceil(strlen($this->randomWordObject->randomWord) * self::GAME_GUESSES_PER_WORD_MULTIPLIER);
+        $this->totalGuessesForWord = ceil(strlen($this->randomWordObject->getRandomWordPlainText()) * self::GAME_GUESSES_PER_WORD_MULTIPLIER);
         $this->totalGuessesLeftForWord = ($this->totalGuessesForWord - count((array) $this->charsGuessed));
         $this->charsNotYetGuessed = array_diff($this->allowedChars, (array) $this->charsGuessed);
-        $this->obfuscatedWord = str_replace($this->charsNotYetGuessed, self::WORD_OBFUSCATE_CHAR, $this->randomWordObject->randomWord);
+        $this->obfuscatedWord = str_replace($this->charsNotYetGuessed, self::WORD_OBFUSCATE_CHAR, $this->randomWordObject->getRandomWordPlainText());
         $unknownChars = substr_count($this->obfuscatedWord, self::WORD_OBFUSCATE_CHAR);
 
         $this->gameStatus = self::GAME_STATUS_IN_PROGRESS;
@@ -42,11 +44,9 @@ class Game {
     }
 
     public function makeGuess(String $char): GuessResultModel {
-        if (!empty($char)) {
-            $this->charsGuessed[] = (String) $char;
-        }
+        $this->charsGuessed[] = $char;
         $this->runGame();
-        return new GuessResultModel($this->obfuscatedWord, $this->totalGuessesLeftForWord, $this->gameStatus, $this->randomWordObject->randomWord);
+        return new GuessResultModel($this->obfuscatedWord, $this->totalGuessesLeftForWord, $this->gameStatus, $this->randomWordObject->getRandomWordPlainText());
     }
 
     public function getRemainingGuessesLeftForWord(): int {
@@ -62,7 +62,7 @@ class Game {
     }
 
     public function getWordDescription(): String {
-        return $this->randomWordObject->randomWordDescription;
+        return $this->randomWordObject->getRandomWordDescription();
     }
 
     public function getRemainingCharsForGuessing(): array {

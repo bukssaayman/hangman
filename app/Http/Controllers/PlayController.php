@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Game\GameUtils\Storage;
+use App\Game\GameUtils\{
+    Storage,
+    GameFactory
+};
 
 class PlayController extends Controller {
 
@@ -32,7 +35,7 @@ class PlayController extends Controller {
                     'word' => $gameResults->getWord(),
                     'remainingGuesses' => $gameResults->getRemainingGuesses(),
                     'gameStatus' => $gameResults->getStatus(),
-                    //'plainTextWord' => $gameResults->getPlainTextWord()
+                    'plainTextWord' => $gameResults->getPlainTextWord()
         ]);
     }
 
