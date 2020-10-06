@@ -1,4 +1,4 @@
-# Running this application
+# Running this Game
 
  - git clone this repo locally
  - In terminal root dir run: `composer update --no-dev`
