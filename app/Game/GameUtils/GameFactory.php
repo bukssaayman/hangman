@@ -2,13 +2,17 @@
 
 namespace App\Game\GameUtils;
 
-use App\Game\RandomWord;
 use App\Game\Game;
+use App\Game\RandomWordFromWebsite;
 
 class GameFactory {
 
-    public static function make() {
-        return new Game(new RandomWord());
+    /**
+     * Factory design pattern. Return a new game.
+     *
+     * @return Game
+     */
+    public static function make(): Game {
+        return new Game(new RandomWordFromWebsite());
     }
-
 }

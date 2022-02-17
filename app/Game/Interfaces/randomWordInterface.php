@@ -4,7 +4,7 @@ namespace App\Game\Interfaces;
 
 interface randomWordInterface {
 
-    public function getRandomWordPlainText(): String;
+    public function getRandomWordPlainText(): string;
 
-    public function getRandomWordDescription(): String;
+    public function getRandomWordDescription(): string;
 }

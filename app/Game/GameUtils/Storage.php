@@ -4,23 +4,26 @@ namespace App\Game\GameUtils;
 
 use App\Game\GameUtils\GameFactory;
 use App\Game\Game;
-use Session;
 
 class Storage {
 
-    /**
-     * You'll notice some inconsistency in how I use the session helpers and library
-     * None of the Laravel docs examples worked for me. Either I set the session and 
-     * it just 'disappears' or it doesn't set at all.  This is the only combination
-     * I found to actually work.  I'll fix this up later.
-     */
-    public static function retrieve() {
-        return \Session::get(Game::class, GameFactory::make());
+   /**
+    * Get the current game in the session.
+    *
+    * @return Game
+    */
+    public static function retrieve(): Game {
+        return session()->get(Game::class, GameFactory::make());
     }
 
-    public static function save(Game $game) {
+    /**
+     * Save the current game to the session.
+     *
+     * @param Game $game
+     * @return void
+     */
+    public static function save(Game $game): void {
         session()->put(Game::class, $game);
         session()->save();
     }
-
 }

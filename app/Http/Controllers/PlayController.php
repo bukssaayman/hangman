@@ -10,11 +10,12 @@ use App\Game\GameUtils\{
 
 class PlayController extends Controller {
 
-    public function __construct() {
-        //nothing for now
-    }
-
-    public function index(Request $request) {
+    /**
+     * Bootstrap for a new game.
+     *
+     * @return void
+     */
+    public function play() {
         $hangmanGame = Storage::retrieve();
         Storage::save($hangmanGame);
 
@@ -26,22 +27,34 @@ class PlayController extends Controller {
         ]);
     }
 
+    /**
+     * Return for an ajax request.
+     *
+     * @param Request $request
+     * @return void
+     */
     public function ajaxGuessCharPost(Request $request) {
         $hangmanGame = Storage::retrieve();
         $input = $request->all();
-        $gameResults = $hangmanGame->makeGuess($input['char']);
+        $gameResults = $hangmanGame->runGame($input['char']);
         Storage::save($hangmanGame);
+
         return response()->json([
-                    'word' => $gameResults->getWord(),
-                    'remainingGuesses' => $gameResults->getRemainingGuesses(),
-                    'gameStatus' => $gameResults->getStatus(),
-                    'plainTextWord' => $gameResults->getPlainTextWord()
+            'word' => $gameResults->getWord(),
+            'remainingGuesses' => $gameResults->getRemainingGuesses(),
+            'gameStatus' => $gameResults->getStatus(),
+            'youFoundTheSecretEasterEgg' => $gameResults->getPlainTextWord()
         ]);
     }
 
+    /**
+     * This gets you a new game.
+     *
+     * @return void
+     */
     public function reset() {
         Storage::save(GameFactory::make());
+
         return back();
     }
-
 }

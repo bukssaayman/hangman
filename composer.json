@@ -1,14 +1,14 @@
 {
-    "name": "laravel/laravel",
+    "name": "hangman/app",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Hangman game with a twist.",
     "keywords": [
         "framework",
         "laravel"
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2.5",
+        "php": ">7.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
