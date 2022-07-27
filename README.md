@@ -6,4 +6,3 @@
  - In terminal root dir run: `php artisan key:generate`
  - In terminal root dir run : `php artisan config:cache`
  - In terminal root dir run : `php artisan serve`
- - Browse to : http://localhost:8000/
